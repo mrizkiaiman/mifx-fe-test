@@ -7,5 +7,5 @@ import { APIResponse } from '../../types'
 import { Product } from '../../types/products'
 
 export const useProducts = () => {
-  return useQuery<APIResponse<Product>, AxiosError>(productKeys.all, () => getProducts())
+  return useQuery<APIResponse<Product>, AxiosError>(productKeys.all, () => getProducts(), { staleTime: Infinity })
 }
