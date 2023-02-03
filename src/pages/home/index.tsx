@@ -7,6 +7,7 @@ import { MdAddShoppingCart } from 'react-icons/md'
 import ReactStars from 'react-stars'
 import { ErrorPage } from '../../components/error-page'
 import { PageLoader } from '../../components/page-loader'
+import { motion } from 'framer-motion'
 
 const Home = () => {
   const { data, isLoading, isError, error } = useProducts()
@@ -48,7 +49,7 @@ const Home = () => {
     <PageLoader />
   ) : (
     <div className="w-screen lg:h-screen flex justify-center items-center">
-      <div className="w-full lg:w-1/2 flex flex-col lg:flex-row justify-center shadow-lg rounded-lg p-8">
+      <div className="w-full lg:w-3/4 flex flex-col lg:flex-row justify-center shadow-lg rounded-lg p-8">
         <div className="flex flex-col items-center lg:w-1/2">
           <div className="relative bg-white shadow-lg mb-12 rounded-lg h-96 w-full flex items-center justify-center">
             <img
@@ -73,21 +74,24 @@ const Home = () => {
           </div>
           <div className="flex gap-4 w-80 md:w-full flex-wrap items-center justify-center">
             {data?.map((item, index) => (
-              <button
-                className={`${selectedProductIndex === index && 'ring-1 ring-green-500'} bg-white cursor-pointer w-14 h-14 rounded-lg`}
-                key={item.id}
-                onClick={() => onSelectImageToPreview(index)}>
-                <img
-                  onError={e => {
-                    e.currentTarget.src = imageNotFound
-                  }}
-                  src={item.image}
-                  width={70}
-                  height={70}
-                  alt={item.name}
-                  className={`object-cover p-2`}
-                />
-              </button>
+              <motion.button whileHover={{ scale: 1.2 }} key={item.id}>
+                <button
+                  className={`${
+                    selectedProductIndex === index && 'ring-4 ring-teal-500'
+                  } bg-white cursor-pointer w-16 h-16 rounded-lg transition ease-in-out duration-150`}
+                  onClick={() => onSelectImageToPreview(index)}>
+                  <img
+                    onError={e => {
+                      e.currentTarget.src = imageNotFound
+                    }}
+                    src={item.image}
+                    width={80}
+                    height={80}
+                    alt={item.name}
+                    className={`object-cover p-2`}
+                  />
+                </button>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -98,12 +102,12 @@ const Home = () => {
           <p className="font-extrabold text-2xl">{selectedProductData.price}</p>
 
           <div className="h-0.5 bg-gray-200 w-full" />
-          <div className="flex gap-4 w-full">
-            <button className="w-1/2 flex items-center justify-center bg-yellow-400 rounded-lg p-4 gap-2">
+          <div className="flex gap-5 w-full">
+            <button className="w-1/2 flex items-center justify-center bg-yellow-400 rounded-lg p-4 gap-2 transition ease-in-out hover:scale-105 hover:bg-teal-700 hover:text-white duration-150">
               <MdAddShoppingCart />
               <p className="font-bold">Add to Cart</p>
             </button>
-            <button className="w-1/2 flex items-center justify-center bg-green-600 rounded-lg p-4">
+            <button className="w-1/2 flex items-center justify-center bg-emerald-600 rounded-lg p-4 transition ease-in-out hover:scale-105 hover:bg-red-700 hover:text-white duration-150">
               <p className="font-bold text-white">Buy Now</p>
             </button>
           </div>
