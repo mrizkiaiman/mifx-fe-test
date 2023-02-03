@@ -73,7 +73,7 @@ const Home = () => {
             </div>
           </div>
           <div className="flex gap-4 w-80 md:w-full flex-wrap items-center justify-center">
-            {data?.map((item, index) => (
+            {data.map((item, index) => (
               <motion.button whileHover={{ scale: 1.2 }} key={item.id}>
                 <button
                   className={`${
