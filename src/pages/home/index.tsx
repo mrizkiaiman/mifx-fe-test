@@ -5,14 +5,16 @@ import { Product } from '../../types/products'
 import { IoMdArrowDropleft, IoMdArrowDropright } from 'react-icons/io'
 import { MdAddShoppingCart } from 'react-icons/md'
 import ReactStars from 'react-stars'
+import { ErrorPage } from '../../components/error-page'
+import { PageLoader } from '../../components/page-loader'
 
-const Main = () => {
-  const { data, isLoading } = useProducts()
+const Home = () => {
+  const { data, isLoading, isError, error } = useProducts()
   const [selectedProductIndex, setSelectedProductIndex] = React.useState<number>(0)
 
   const imageNotFound = 'assets/placeholder-no-photo.webp'
   const dataNotFound: Product = {
-    id: '7',
+    id: '100',
     image: imageNotFound,
     images: [imageNotFound],
     name: 'Not found',
@@ -40,10 +42,14 @@ const Main = () => {
     setProductImagesIndex(0)
   }
 
-  return (
-    <div className="w-screen h-screen flex justify-center items-center">
-      <div className="w-full md:w-1/2 flex justify-center shadow-lg rounded-lg p-8">
-        <div className="flex flex-col items-center w-1/2">
+  if (isError) return <ErrorPage message={error.message} />
+  //The loading will be rendered twice in dev environment since CRA is using React.StrictMode by default, you can remove it from index.tsx
+  return isLoading ? (
+    <PageLoader />
+  ) : (
+    <div className="w-screen lg:h-screen flex justify-center items-center">
+      <div className="w-full lg:w-1/2 flex flex-col lg:flex-row justify-center shadow-lg rounded-lg p-8">
+        <div className="flex flex-col items-center lg:w-1/2">
           <div className="relative bg-white shadow-lg mb-12 rounded-lg h-96 w-full flex items-center justify-center">
             <img
               onError={e => {
@@ -65,7 +71,7 @@ const Main = () => {
               </button>
             </div>
           </div>
-          <div className="flex gap-4 w-full flex-wrap items-center justify-center">
+          <div className="flex gap-4 w-80 md:w-full flex-wrap items-center justify-center">
             {data?.map((item, index) => (
               <button
                 className={`${selectedProductIndex === index && 'ring-1 ring-green-500'} bg-white cursor-pointer w-14 h-14 rounded-lg`}
@@ -85,11 +91,11 @@ const Main = () => {
             ))}
           </div>
         </div>
-        <div className="w-1/2 flex flex-col gap-3 p-8">
-          <p className="font-extrabold text-3xl text-red-500">SALE</p>
+        <div className="lg:w-1/2 flex flex-col gap-3 p-2 lg:p-8">
+          <p className="font-extrabold text-3xl text-red-500 tracking-tighter">SALE</p>
           <p className="font-bold text-xl">{selectedProductData.name}</p>
           <ReactStars value={selectedProductData.rating} edit={false} size={24} color2={'#ffd700'} />
-          <p className="font-bold text-2xl">{selectedProductData.price}</p>
+          <p className="font-extrabold text-2xl">{selectedProductData.price}</p>
 
           <div className="h-0.5 bg-gray-200 w-full" />
           <div className="flex gap-4 w-full">
@@ -107,4 +113,4 @@ const Main = () => {
   )
 }
 
-export default Main
+export default Home
