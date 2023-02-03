@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 
-import { APIResponse } from '../types/index'
+import { APIResponse } from '../types'
 
 export const GET = async <T = APIResponse>(
   url: string,

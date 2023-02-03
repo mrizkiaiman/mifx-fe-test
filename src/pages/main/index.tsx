@@ -3,6 +3,8 @@ import { useProducts } from '../../services/products/hooks'
 import { Product } from '../../types/products'
 
 import { IoMdArrowDropleft, IoMdArrowDropright } from 'react-icons/io'
+import { MdAddShoppingCart } from 'react-icons/md'
+import ReactStars from 'react-stars'
 
 const Main = () => {
   const { data, isLoading } = useProducts()
@@ -39,32 +41,36 @@ const Main = () => {
   }
 
   return (
-    <div className="w-screen h-screen flex justify-center items-cente">
-      <div className="w-3/4 md:w-1/2 flex justify-center items-center ">
-        <div className="flex flex-col items-center w-3/4 bg-red-500">
-          <div className="relative">
+    <div className="w-screen h-screen flex justify-center items-center">
+      <div className="w-full md:w-1/2 flex justify-center shadow-lg rounded-lg p-8">
+        <div className="flex flex-col items-center w-1/2">
+          <div className="relative bg-white shadow-lg mb-12 rounded-lg h-96 w-full flex items-center justify-center">
             <img
               onError={e => {
                 e.currentTarget.src = imageNotFound
               }}
+              className="mb-8"
               src={selectedProductData.images[productImagesIndex]}
-              width={200}
-              height={200}
+              width={360}
+              height={360}
               alt={'displayed-product'}
             />
-            <div className="absolute right-0 bottom-0 flex items-center justify-center">
+            <div className="absolute right-2 bottom-4 flex items-center justify-center">
               <button onClick={onPrevImagePreview}>
-                <IoMdArrowDropleft className="cursor mr-3 text-2xl text-gray-700" />
+                <IoMdArrowDropleft className="cursor mr-3 text-4xl text-gray-700" />
               </button>
-              <p>{productImagesIndex + 1 + ' / ' + selectedProductData?.images?.length}</p>
+              <p className="font-bold">{productImagesIndex + 1 + ' / ' + selectedProductData?.images?.length}</p>
               <button onClick={onNextImagePreview}>
-                <IoMdArrowDropright className="cursor ml-3 text-2xl text-gray-700" />
+                <IoMdArrowDropright className="cursor ml-3 text-4xl text-gray-700" />
               </button>
             </div>
           </div>
-          <div className="flex gap-4 w-3/4 flex-wrap items-center justify-center">
+          <div className="flex gap-4 w-full flex-wrap items-center justify-center">
             {data?.map((item, index) => (
-              <button key={item.id} onClick={() => onSelectImageToPreview(index)}>
+              <button
+                className={`${selectedProductIndex === index && 'ring-1 ring-green-500'} bg-white cursor-pointer w-14 h-14 rounded-lg`}
+                key={item.id}
+                onClick={() => onSelectImageToPreview(index)}>
                 <img
                   onError={e => {
                     e.currentTarget.src = imageNotFound
@@ -73,14 +79,28 @@ const Main = () => {
                   width={70}
                   height={70}
                   alt={item.name}
-                  className={`bg-white cursor-pointer object-cover p-2 ${selectedProductIndex === index && 'ring-1 ring-white'} rounded-lg`}
+                  className={`object-cover p-2`}
                 />
               </button>
             ))}
           </div>
         </div>
-        <div className="w-1/4 bg-slate-800">
-          <p>asd</p>
+        <div className="w-1/2 flex flex-col gap-3 p-8">
+          <p className="font-extrabold text-3xl text-red-500">SALE</p>
+          <p className="font-bold text-xl">{selectedProductData.name}</p>
+          <ReactStars value={selectedProductData.rating} edit={false} size={24} color2={'#ffd700'} />
+          <p className="font-bold text-2xl">{selectedProductData.price}</p>
+
+          <div className="h-0.5 bg-gray-200 w-full" />
+          <div className="flex gap-4 w-full">
+            <button className="w-1/2 flex items-center justify-center bg-yellow-400 rounded-lg p-4 gap-2">
+              <MdAddShoppingCart />
+              <p className="font-bold">Add to Cart</p>
+            </button>
+            <button className="w-1/2 flex items-center justify-center bg-green-600 rounded-lg p-4">
+              <p className="font-bold text-white">Buy Now</p>
+            </button>
+          </div>
         </div>
       </div>
     </div>
